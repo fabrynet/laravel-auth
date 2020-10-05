@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Location;
+use App\Employee;
+use App\Task;
+
 class LoggedController extends Controller
 {
   /**
@@ -21,51 +25,72 @@ class LoggedController extends Controller
    *
    * @return \Illuminate\Contracts\Support\Renderable
    */
-  public function index()
-  {
-      return view('home');
-  }
-  public function create() {
-    $locs = Location::all();
-    return view('employees.create', compact('locs'));
-  }
-  public function store(Request $request) {
 
-    $validatedData = $request -> validate([
-      'firstname' => 'bail|required|alpha|max:60',
-      'lastname' => 'required|alpha|max:60',
-      'date_of_birth' => 'required|date',
-      'private_code' => 'required|digits_between:1,15',
-      ]);
+    public function createEmployees() {
+      $locs = Location::all();
+      return view('employees.create', compact('locs'));
+    }
 
-    Employee::create($request -> all());
-    return redirect() -> route('employees.index');
+    public function storeEmployees(Request $request) {
 
-  }
-  public function edit($id) {
-    $emp = Employee::findOrFail($id);
-    $locs = Location::all();
-    return view('employees.edit', compact('emp','locs'));
-  }
-  public function update(Request $request, $id) {
+      $validatedData = $request -> validate([
+        'firstname' => 'bail|required|alpha|max:60',
+        'lastname' => 'required|alpha|max:60',
+        'date_of_birth' => 'required|date',
+        'private_code' => 'required|digits_between:1,15',
+        ]);
 
-    $validatedData = $request -> validate([
-      'firstname' => 'bail|required|alpha|max:60',
-      'lastname' => 'required|alpha|max:60',
-      'date_of_birth' => 'required|date',
-      'private_code' => 'required|digits_between:1,15',
-      ]);
+      Employee::create($request -> all());
+      return redirect() -> route('employees.index');
 
-    $data = $request -> all();
-    $emp = Employee::findOrFail($id);
-    $emp -> update($data);
+    }
 
-    return redirect() -> route('employees.index');
+    public function editEmployees($id) {
+      $emp = Employee::findOrFail($id);
+      $locs = Location::all();
+      return view('employees.edit', compact('emp','locs'));
+    }
 
-  }
-  public function delete($id) {
-    $emp = Employee::findOrFail($id);
-    $emp -> delete();
-    return redirect() -> route('employees.index');
-  }
+    public function updateEmployees(Request $request, $id) {
+
+      $validatedData = $request -> validate([
+        'firstname' => 'bail|required|alpha|max:60',
+        'lastname' => 'required|alpha|max:60',
+        'date_of_birth' => 'required|date',
+        'private_code' => 'required|digits_between:1,15',
+        ]);
+
+      $data = $request -> all();
+      $emp = Employee::findOrFail($id);
+      $emp -> update($data);
+
+      return redirect() -> route('employees.index');
+
+    }
+
+    public function destroyEmployees($id) {
+      $emp = Employee::findOrFail($id);
+      $emp -> delete();
+      return redirect() -> route('employees.index');
+    }
+
+    public function assignTaskEmployees(Request $request, $id) {
+      $data = $request -> all(); // restituisce array
+      $task = $data['task_id'];
+      $emp = Employee::findOrFail($id);
+      if ( !$emp -> tasks() -> find($task) ) {
+        $emp -> tasks() -> attach($task);
+      }
+
+      return redirect() -> route('employees.show', $emp -> id);
+    }
+    
+    public function unassignTaskEmployees(Request $request, $id) {
+      $data = $request -> all(); // restituisce array
+      $task = $data['task_id'];
+      $emp = Employee::findOrFail($id);
+      $emp -> tasks() -> detach($task);
+
+      return redirect() -> route('employees.show', $emp -> id);
+    }
 }
