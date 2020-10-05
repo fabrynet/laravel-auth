@@ -5,15 +5,14 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
-
-                <div class="card-body">
+                <div class="card-header">
                   <h1>Index Employees</h1>
-
                   @auth
                   <a href="{{ route('employees.create') }}">Create New Employee</a>
                   @endauth
+                </div>
 
+                <div class="card-body">
                   <ol>
                     @foreach ($emps as $emp)
                       <li>
