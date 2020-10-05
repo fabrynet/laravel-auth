@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="card-body">
-                  <ul>
+                  <ul class="list-unstyled">
                     <li>
                       <b>Date of birth:</b> {{ $emp -> date_of_birth }}
                     </li>
@@ -48,21 +48,23 @@
                       Tasks
                     </h3>
                     @if ($emp -> tasks -> isNotEmpty())
-                      <table>
+                      <table class="table table-hover">
                         <thead>
-                          <th></th>
-                          <th>
-                            task
-                          </th>
-                          <th>
-                            description
-                          </th>
-                          <th>
-                            start date
-                          </th>
-                          <th>
-                            end date
-                          </th>
+                          <tr>
+                            <th scope="col"></th>
+                            <th scope="col">
+                              task
+                            </th>
+                            <th scope="col">
+                              description
+                            </th>
+                            <th scope="col">
+                              start date
+                            </th>
+                            <th scope="col">
+                              end date
+                            </th>
+                          </tr>
                         </thead>
                         @foreach ($emp -> tasks as $tas)
                           <tr>
@@ -103,8 +105,8 @@
                       @csrf
                       @method('POST')
                       <div class="form-group">
-                        <label for="task_id">Task</label>
-                        <select name="task_id">
+                        {{-- <label for="task_id">Task</label> --}}
+                        <select class="form-control" name="task_id">
                           @foreach ($tasks as $task)
                             <option value="{{ $task -> id}}">
                               {{ $task -> name }}
