@@ -64,7 +64,7 @@ class LoggedController extends Controller
       $emp = Employee::findOrFail($id);
       $emp -> update($data);
 
-      return redirect() -> route('employees.index');
+      return redirect() -> route('employees.show', $id);
 
     }
 
@@ -84,7 +84,7 @@ class LoggedController extends Controller
 
       return redirect() -> route('employees.show', $emp -> id);
     }
-    
+
     public function unassignTaskEmployees(Request $request, $id) {
       $data = $request -> all(); // restituisce array
       $task = $data['task_id'];

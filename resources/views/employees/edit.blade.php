@@ -31,11 +31,11 @@
                     @method('PUT')
 
                     <div class="row">
-                      <div class="form-group col-lg-6">
+                      <div class="form-group col-md-6">
                         <label for="firstname">First Name</label>
                         <input class="form-control" type="text" name="firstname" value="{{ $emp -> firstname }}" required>
                       </div>
-                      <div class="form-group col-lg-6">
+                      <div class="form-group col-md-6">
                         <label for="lastname">Last Name</label>
                         <input class="form-control" type="text" name="lastname" value="{{ $emp -> lastname }}" required>
                       </div>
