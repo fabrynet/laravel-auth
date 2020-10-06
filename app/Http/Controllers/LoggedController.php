@@ -40,8 +40,9 @@ class LoggedController extends Controller
         'private_code' => 'required|digits_between:1,15',
         ]);
 
-      Employee::create($request -> all());
-      return redirect() -> route('employees.index');
+      $data = $request -> all();
+      $emp = Employee::create($data);
+      return redirect() -> route('employees.show', $emp -> id);
 
     }
 
